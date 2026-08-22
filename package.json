@@ -1,6 +1,6 @@
 {
   "name": "@yottameta/code-quality-guard",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Pair-style code quality reviewer: twelve book-grounded decay risks (R1-R6, T1-T6) plus release-safety and first-paint UX checks; Iron Law findings (Symptom -> Source -> Consequence -> Remedy) and 0-100 Health Score.",
   "license": "MIT",
   "keywords": [

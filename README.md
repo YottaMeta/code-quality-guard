@@ -41,9 +41,18 @@ code-quality-guard/
 
 ## 安装
 
-> 先拿到技能文件：`git clone https://github.com/YottaMeta/code-quality-guard.git`（或 GitHub ZIP / `npm pack @yottameta/code-quality-guard` 解包），再按系统选择方式。
+三种方式任选其一，技能文件统一从 **npm** 获取（GitHub 无代理时较慢，npm 可配国内镜像加速）。
 
-### Linux / macOS / Windows（Git Bash）——脚本
+### 方式一：npm（推荐）
+```bash
+# 国内加速（可选）：npm config set registry https://registry.npmmirror.com
+npm pack @yottameta/code-quality-guard
+tar -xzf yottameta-code-quality-guard-0.1.2.tgz
+cd package && bash install.sh codex
+```
+
+### 方式二：install.sh 一键安装
+获取技能文件夹后（`npm pack` 解包或 `git clone`），进入技能文件夹：
 ```bash
 ./install.sh codex               # 用户级（默认装到 ~/.codex/skills）
 ./install.sh codex --project     # 当前项目级
@@ -51,23 +60,10 @@ code-quality-guard/
 ./install.sh --dir /path/to/skills
 ./install.sh --list
 ```
+> Windows 用户：装有 Git Bash 即可用；否则用方式三手动复制。
 
-### Windows（无 Git Bash）——手动复制
+### 方式三：手动复制
 把整个 `code-quality-guard` 文件夹复制到目标 skills 目录（如 `%USERPROFILE%\.codex\skills\code-quality-guard\`）。
-
-### npm 双源
-npm 包是分发源（文件与 GitHub 一致）：
-```bash
-npm pack @yottameta/code-quality-guard
-tar -xzf yottameta-code-quality-guard-0.1.1.tgz
-cd package && bash install.sh codex
-```
-
-### npx skills
-```bash
-npx skills add YottaMeta/code-quality-guard -g    # Windows 建议加 --copy
-```
-
 ## 使用
 
 对话中说「review this PR」「结对评审」「发版前扫一眼」，或直接调用 `/code-quality-guard`。
