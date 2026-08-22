@@ -76,11 +76,7 @@ npx -y @yottameta/code-quality-guard --dir <你的技能目录>   # 任意智能
 | WorkBuddy | `%USERPROFILE%\.workbuddy\skills\code-quality-guard\` |
 | 通用约定 | `%USERPROFILE%\.agents\skills\code-quality-guard\`（Cursor/Codex/Copilot 等会读取，**但不是所有智能体都有**，别默认它存在） |
 
-> **不确定技能目录在哪？**
-> 1. 查该智能体官方文档（搜「skills directory」+ 智能体名）。
-> 2. 看它是否已装过其他技能，复制到同一目录即可。
-> 3. 搜索本机：Windows `Get-ChildItem $HOME -Directory -Recurse -Force -Filter skills`；Linux/macOS `find ~ -type d -name skills 2>/dev/null`。
-> 4. 都找不到？用方式一/方式二的 `--dir` 指定目录，或把文件夹放到智能体可读取的位置并在其配置里启用。
+> 不确定目录？用 `--dir` 指定路径，或让该智能体自己安装（如 npx skills）。各智能体目录以官方文档为准。
 ## 使用
 
 对话中说「review this PR」「结对评审」「发版前扫一眼」，或直接调用 `/code-quality-guard`。
