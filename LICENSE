@@ -1,7 +1,7 @@
 MIT License
 
 Copyright (c) 2026 hyhmrright (original quality-review methodology)
-Copyright (c) 2026 code-quality-guard (this normalized, agent-agnostic packaging)
+Copyright (c) 2026 YottaMeta (this normalized, agent-agnostic packaging)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,8 +20,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
-
----
-
-Methodology origination: prior open-source quality-review work by hyhmrright (MIT).
-This package re-authors that methodology as a single, self-contained, cross-agent skill.

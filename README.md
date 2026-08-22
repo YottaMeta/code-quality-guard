@@ -35,7 +35,7 @@ code-quality-guard/
 │   ├── examples.md           # 语气 / 评分校准
 │   ├── AGENTS-template.md    # 可选：丢进仓库当 AGENTS.md 强制规范
 │   └── hooks.json            # 可选：PreToolUse 拦截 rm -rf / git push --force
-├── install.sh                # 一键安装到 5 类智能体
+├── install.sh                # 一键安装到 7 类智能体
 └── LICENSE                   # MIT
 ```
 
@@ -61,6 +61,12 @@ code-quality-guard/
 ./install.sh --dir /path/to/skills
 ```
 
+### 方式三：npx skills
+
+```bash
+npx skills add YottaMeta/code-quality-guard/tree/main/SKILL.md
+```
+
 ## 使用
 
 对话中说「review this PR」「结对评审」「发版前扫一眼」，或直接调用 `/code-quality-guard`。
@@ -75,5 +81,5 @@ code-quality-guard/
 
 ## 来源与许可
 
-- **方法论**蒸馏自 12 本经典软件工程著作及开源社区质量审查实践（MIT）；本技能在其基础上重写为单一自包含、跨智能体通用的版本，并增补 R7 / UX1 / 按需加载会话契约。
-- **许可：** MIT —— 详见 `LICENSE`。
+- **方法论**蒸馏自 12 本经典软件工程著作及开源社区质量审查实践（MIT）；原始方法论版权归 hyhmrright，本技能在其基础上重写为单一自包含、跨智能体通用的版本，并增补 R7 / UX1 / 按需加载会话契约。
+- **许可：** MIT —— 详见 `LICENSE`（版权人：hyhmrright（原始方法论）+ YottaMeta（本打包））。
