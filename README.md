@@ -47,8 +47,9 @@ code-quality-guard/
 ```bash
 # 国内加速（可选）：npm config set registry https://registry.npmmirror.com
 npx -y @yottameta/code-quality-guard -g
+npx -y @yottameta/code-quality-guard --dir <你的技能目录>   # 任意智能体：指定目录安装
 ```
-> 想手动拿文件也可 `npm pack @yottameta/code-quality-guard` 解包后按方式二/三安装。
+> 智能体不在预置列表里？用 `--dir` 指定它的 skills 目录，或手动复制（方式三）。想手动拿文件也可 `npm pack @yottameta/code-quality-guard` 解包后按方式二/三安装。
 
 ### 方式二：install.sh 一键安装
 获取技能文件夹后（`npm pack` 解包或 `git clone`），进入技能文件夹：
