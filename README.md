@@ -43,13 +43,12 @@ code-quality-guard/
 
 三种方式任选其一，技能文件统一从 **npm** 获取（GitHub 无代理时较慢，npm 可配国内镜像加速）。
 
-### 方式一：npm（推荐）
+### 方式一：npm（推荐，一行安装）
 ```bash
 # 国内加速（可选）：npm config set registry https://registry.npmmirror.com
-npm pack @yottameta/code-quality-guard
-tar -xzf yottameta-code-quality-guard-0.1.2.tgz
-cd package && bash install.sh codex
+npx -y @yottameta/code-quality-guard -g
 ```
+> 想手动拿文件也可 `npm pack @yottameta/code-quality-guard` 解包后按方式二/三安装。
 
 ### 方式二：install.sh 一键安装
 获取技能文件夹后（`npm pack` 解包或 `git clone`），进入技能文件夹：

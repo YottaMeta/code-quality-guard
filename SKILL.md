@@ -9,7 +9,7 @@ description: >-
   「结对评审」/「发版前扫一眼」/ code-quality-guard.
   Do NOT trigger for: greenfield "how do I write X" with no code, pure syntax questions,
   or tool/framework questions with no shared code.
-version: 0.1.2
+version: 0.1.3
 license: MIT
 ---
 
