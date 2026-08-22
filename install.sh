@@ -77,12 +77,18 @@ fi
 
 # resolve this skill's folder (adjacent to install.sh)
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd || true)"
+case "$(uname -s)" in
+  MINGW*|MSYS*)
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd -W || true)"
+    ;;
+esac
 SRC="$SCRIPT_DIR"
 
 [ -f "$SRC/SKILL.md" ] || { err "SKILL.md not found next to install.sh ($SRC)"; exit 1; }
 
 mkdir -p "$DEST/code-quality-guard"
 cp -R "$SRC/." "$DEST/code-quality-guard/"
+rm -rf "$DEST/code-quality-guard/.git"   # 从 git clone 安装时不带 .git
 
 ok "Installed code-quality-guard -> $DEST/code-quality-guard"
 info "Next: open the agent and say 'review this PR' / 'audit the architecture'."
