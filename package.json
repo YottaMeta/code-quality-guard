@@ -7,7 +7,7 @@
   "files": ["SKILL.md", "LICENSE", "README.md", "install.sh", "references"],
   "repository": {
     "type": "git",
-    "url": "https://github.com/YottaMeta/code-quality-guard.git"
+    "url": "git+https://github.com/YottaMeta/code-quality-guard.git"
   },
   "publishConfig": {
     "access": "public"
