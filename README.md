@@ -1,6 +1,19 @@
-# code-quality-guard（代码质量守卫）
+<p align="center">
+  <img src="assets/banner.png" alt="code-quality-guard banner" width="100%" />
+</p>
 
-面向 **Cursor / Codex / WorkBuddy / 通用 Agent** 的结对代码审查技能。把「代码质量审查」作为可复用的技能，让智能体在交付前像资深工程师一样通读代码、定位劣化、给出可执行的修复方案。
+<h1 align="center">code-quality-guard（代码质量守卫）</h1>
+
+<p align="center">面向 **Cursor / Codex / WorkBuddy / 通用 Agent** 的结对代码审查技能。把「代码质量审查」作为可复用的技能，让智能体在交付前像资深工程师一样通读代码、定位劣化、给出可执行的修复方案。</p>
+
+<p align="center">
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue" /></a>
+  <a href="https://agentskills.io/"><img alt="Standard: agentskills.io" src="https://img.shields.io/badge/standard-agentskills.io-orange" /></a>
+  <a href="https://www.npmjs.com/package/@yottameta/code-quality-guard"><img alt="npm package" src="https://img.shields.io/npm/v/@yottameta/code-quality-guard" /></a>
+  <a href="https://github.com/YottaMeta/code-quality-guard"><img alt="GitHub stars" src="https://img.shields.io/github/stars/YottaMeta/code-quality-guard" /></a>
+  <a href="https://github.com/YottaMeta/code-quality-guard/commits/main"><img alt="last commit" src="https://img.shields.io/github/last-commit/YottaMeta/code-quality-guard" /></a>
+  <a href="https://github.com/YottaMeta/code-quality-guard"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen" /></a>
+</p>
 
 ## 核心理念
 
