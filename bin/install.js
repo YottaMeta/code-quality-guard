@@ -79,8 +79,8 @@ function copyDir(src, dst, skip) {
 }
 
 function displayDir(rel) {
-  if (rel === '.codex/skills') return codexUserDir();
-  if (rel === '.config/opencode/skills') return opencodeUserDir();
+  if (rel === '.codex/skills') return '$CODEX_HOME/skills（默认 ~/.codex/skills）';
+  if (rel === '.config/opencode/skills') return '$XDG_CONFIG_HOME/opencode/skills（默认 ~/.config/opencode/skills）';
   return '~/' + rel;
 }
 
@@ -102,6 +102,7 @@ function main() {
       console.log('  ' + key.padEnd(10) + v.label.padEnd(18) + resolved.join('、'));
     }
     console.log('\n说明：仅收录有官方默认目录的智能体；改了目录的请用 --dir <路径>，不要依赖默认位置。');
+    console.log('codex 设置了 CODEX_HOME / opencode 设置了 XDG_CONFIG_HOME 时，安装自动以该变量为准（--list 显示默认位置）。');
     return;
   }
 

@@ -69,13 +69,14 @@ list() {
     dirs="$(dirs_for "$a")"
     first="${dirs%% *}"
     case "$first" in
-      __CODEX__)   first="$(codex_dir)" ;;
-      __OPENCODE__) first="$(opencode_dir)" ;;
+      __CODEX__)   first='$CODEX_HOME/skills（默认 ~/.codex/skills）' ;;
+      __OPENCODE__) first='$XDG_CONFIG_HOME/opencode/skills（默认 ~/.config/opencode/skills）' ;;
       *)           first="~/$first" ;;
     esac
     printf '  %-10s %s\n' "$a" "$first"
   done
   echo '说明：仅收录有官方默认目录的智能体；改了目录的请用 --dir <路径>，不要依赖默认位置。'
+  echo 'codex 设置了 CODEX_HOME / opencode 设置了 XDG_CONFIG_HOME 时，安装自动以该变量为准（--list 显示默认位置）。'
 }
 
 main() {
