@@ -18,6 +18,11 @@ esac
 
 # 智能体 -> 用户级默认目录（--agent 装到第一个）
 # .agents/skills 并非通用目录：OpenCode / Cursor / Cline / Amp / Kimi / Gemini CLI / GitHub Copilot 读取。
+# 判断当前环境：Windows Git Bash 用 %USERPROFILE%，Unix 用 ~
+_IS_WINDOWS=0
+case "$(uname -s)" in
+  MINGW*|MSYS*|CYGWIN*) _IS_WINDOWS=1 ;;
+esac
 dirs_for() {
   case "$1" in
     claude)     echo ".claude/skills" ;;
@@ -69,14 +74,18 @@ list() {
     dirs="$(dirs_for "$a")"
     first="${dirs%% *}"
     case "$first" in
-      __CODEX__)   first='$CODEX_HOME/skills（默认 ~/.codex/skills）' ;;
-      __OPENCODE__) first='$XDG_CONFIG_HOME/opencode/skills（默认 ~/.config/opencode/skills）' ;;
-      *)           first="~/$first" ;;
+      __CODEX__)    first=".codex/skills" ;;
+      __OPENCODE__) first=".config/opencode/skills" ;;
     esac
+    if [ "$_IS_WINDOWS" = "1" ]; then
+      first="%USERPROFILE%\\${first//\//\\}"
+    else
+      first="~/$first"
+    fi
     printf '  %-10s %s\n' "$a" "$first"
   done
-  echo '说明：仅收录有官方默认目录的智能体；改了目录的请用 --dir <路径>，不要依赖默认位置。'
-  echo 'codex 设置了 CODEX_HOME / opencode 设置了 XDG_CONFIG_HOME 时，安装自动以该变量为准（--list 显示默认位置）。'
+  echo '说明：Windows 用 %USERPROFILE%，Linux/macOS 用 ~；仅收录有官方默认目录的智能体。'
+  echo '改了目录的请用 --dir <路径>，不要依赖默认位置；若设置了 CODEX_HOME / XDG_CONFIG_HOME，安装自动以该变量为准。'
 }
 
 main() {
