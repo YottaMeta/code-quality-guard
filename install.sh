@@ -1,94 +1,122 @@
 #!/usr/bin/env bash
-#
-# code-quality-guard — portable cross-agent installer.
-#
-# Copies the code-quality-guard/ skill folder (SKILL.md + references/) into the
-# skills directory of the target agent. Single-level layout, so relative reads
-# (references/*.md) always resolve.
-#
-# Usage:
-#   ./install.sh <platform> [--project] [--dir PATH]
-#
-# Platforms: workbuddy codex claude cursor agents opencode gemini
-#   agents = vendor-neutral ~/.agents/skills (read by Cursor, Copilot, pi, Gemini, Codex)
-#
+# code-quality-guard 多智能体安装脚本（YottaSkills）
+# 用法:
+#   bash install.sh --agent <name>  # 按智能体默认用户级目录安装
+#   bash install.sh --dir <path>    # 装到指定目录（用户改过目录的智能体）
+#   bash install.sh -g              # 装到全部已知智能体用户级目录
+#   bash install.sh                  # 检测并安装到已存在的项目级目录
+#   bash install.sh --list          # 列出智能体 -> 默认目录
 set -euo pipefail
 
-PLATFORMS="workbuddy codex claude cursor agents opencode gemini"
-
-err()  { printf '\033[31merror:\033[0m %s\n' "$*" >&2; }
-info() { printf '\033[36m›\033[0m %s\n' "$*"; }
-ok()   { printf '\033[32m✓\033[0m %s\n' "$*"; }
-
-global_dir() {
-  case "$1" in
-    workbuddy) printf '%s' "$HOME/.workbuddy/skills" ;;
-    codex)     printf '%s' "$HOME/.codex/skills" ;;
-    claude)    printf '%s' "$HOME/.claude/skills" ;;
-    cursor)    printf '%s' "$HOME/.cursor/skills" ;;
-    agents)    printf '%s' "$HOME/.agents/skills" ;;
-    opencode)  printf '%s' "$HOME/.config/opencode/skills" ;;
-    gemini)    printf '%s' "$HOME/.gemini/skills" ;;
-    *)         return 1 ;;
-  esac
-}
-
-project_dir() {
-  case "$1" in
-    workbuddy) printf '%s' "$PWD/.workbuddy/skills" ;;
-    codex)     printf '%s' "$PWD/.codex/skills" ;;
-    claude)    printf '%s' "$PWD/.claude/skills" ;;
-    cursor)    printf '%s' "$PWD/.cursor/skills" ;;
-    agents)    printf '%s' "$PWD/.agents/skills" ;;
-    opencode)  printf '%s' "$PWD/.opencode/skills" ;;
-    gemini)    printf '%s' "$PWD/.gemini/skills" ;;
-    *)         return 1 ;;
-  esac
-}
-
-PLATFORM=""
-SCOPE="global"
-EXPLICIT_DIR=""
-while [ $# -gt 0 ]; do
-  case "$1" in
-    --project|--here) SCOPE="project" ;;
-    --dir)            shift; EXPLICIT_DIR="${1:-}" ;;
-    --list)           printf 'Supported platforms: %s\n' "$PLATFORMS"; exit 0 ;;
-    -h|--help)        sed -n '2,22p' "${BASH_SOURCE[0]:-$0}" | sed 's/^# \{0,1\}//'; exit 0 ;;
-    -*)               err "unknown flag: $1"; exit 2 ;;
-    *)                PLATFORM="$1" ;;
-  esac
-  shift
-done
-
-if [ -z "$PLATFORM" ] && [ -z "$EXPLICIT_DIR" ]; then
-  err "no platform given. Example: ./install.sh workbuddy"
-  printf 'Supported platforms: %s\n' "$PLATFORMS" >&2
-  exit 2
-fi
-
-if [ -n "$EXPLICIT_DIR" ]; then
-  DEST="$EXPLICIT_DIR"
-elif [ "$SCOPE" = "project" ]; then
-  DEST="$(project_dir "$PLATFORM")" || { err "unknown platform: $PLATFORM"; exit 2; }
-else
-  DEST="$(global_dir "$PLATFORM")" || { err "unknown platform: $PLATFORM"; exit 2; }
-fi
-
-# resolve this skill's folder (adjacent to install.sh)
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd || true)"
+SKILL_NAME="code-quality-guard"
+SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 case "$(uname -s)" in
   MINGW*|MSYS*)
-    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]:-$0}")" >/dev/null 2>&1 && pwd -W || true)"
+    SOURCE_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd -W)"
     ;;
 esac
-SRC="$SCRIPT_DIR"
 
-[ -f "$SRC/SKILL.md" ] || { err "SKILL.md not found next to install.sh ($SRC)"; exit 1; }
+# 智能体 -> 用户级默认目录（--agent 装到第一个）
+# .agents/skills 并非通用目录：OpenCode / Cursor / Cline / Amp / Kimi / Gemini CLI / GitHub Copilot 读取。
+dirs_for() {
+  case "$1" in
+    claude)     echo ".claude/skills" ;;
+    cursor)     echo ".cursor/skills .agents/skills" ;;
+    codex)      echo "__CODEX__" ;;
+    gemini)     echo ".gemini/skills .agents/skills" ;;
+    goose)      echo ".config/goose/skills .agents/skills" ;;
+    amp)        echo ".config/agents/skills .agents/skills" ;;
+    opencode)   echo "__OPENCODE__" ;;
+    windsurf)   echo ".codeium/windsurf/skills" ;;
+    workbuddy)  echo ".workbuddy/skills" ;;
+    kiro)       echo ".kiro/skills" ;;
+    trae)       echo ".traecli/skills" ;;
+    trae-cn)    echo ".trae-cn/skills" ;;
+    qwen)       echo ".qwen/skills" ;;
+    comate)     echo ".comate/skills" ;;
+    codebuddy)  echo ".codebuddy/skills" ;;
+    kimi)       echo ".kimi/skills" ;;
+    agents)     echo ".agents/skills" ;;
+    *)          return 1 ;;
+  esac
+}
 
-mkdir -p "$DEST/code-quality-guard"
-cp -R "$SRC/." "$DEST/code-quality-guard/"
-rm -rf "$DEST/code-quality-guard/.git"   # 从 git clone 安装时不带 .git
+codex_dir() {
+  if [ -n "${CODEX_HOME:-}" ]; then printf '%s' "$CODEX_HOME/skills"; else printf '%s' "$HOME/.codex/skills"; fi
+}
+opencode_dir() {
+  if [ -n "${XDG_CONFIG_HOME:-}" ]; then printf '%s' "$XDG_CONFIG_HOME/opencode/skills"; else printf '%s' "$HOME/.config/opencode/skills"; fi
+}
+resolve_user() {
+  case "$1" in
+    __CODEX__)    codex_dir ;;
+    __OPENCODE__) opencode_dir ;;
+    *)            printf '%s' "$HOME/$1" ;;
+  esac
+}
 
-ok "Installed code-quality-guard -> $DEST/code-quality-guard"
-info "Next: open the agent and say 'review this PR' / 'audit the architecture'."
+install_to() {
+  mkdir -p "$1/$SKILL_NAME"
+  cp -r "$SOURCE_DIR/." "$1/$SKILL_NAME/"
+  rm -rf "$1/$SKILL_NAME/.git"
+  echo "installed -> $1/$SKILL_NAME"
+}
+
+list() {
+  echo "智能体 -> 默认技能目录（--agent <name> 装到第一个，用户级）:"
+  for a in claude cursor codex gemini goose amp opencode windsurf workbuddy kiro trae trae-cn qwen comate codebuddy kimi agents; do
+    local dirs first
+    dirs="$(dirs_for "$a")"
+    first="${dirs%% *}"
+    case "$first" in
+      __CODEX__)   first="$(codex_dir)" ;;
+      __OPENCODE__) first="$(opencode_dir)" ;;
+      *)           first="~/$first" ;;
+    esac
+    printf '  %-10s %s\n' "$a" "$first"
+  done
+  echo '说明：仅收录有官方默认目录的智能体；改了目录的请用 --dir <路径>，不要依赖默认位置。'
+}
+
+main() {
+  local agent="" dir="" global=0 show_list=0
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      --agent) shift; agent="${1:-}" ;;
+      --dir)   shift; dir="${1:-}" ;;
+      -g|--global) global=1 ;;
+      --list|-l) show_list=1 ;;
+      *) echo "未知参数: $1" >&2; exit 2 ;;
+    esac
+    shift
+  done
+
+  if [ "$show_list" = "1" ]; then list; return; fi
+  if [ -n "$dir" ]; then install_to "$dir"; echo "完成。"; return; fi
+  if [ -n "$agent" ]; then
+    local dirs first
+    if ! dirs="$(dirs_for "$agent")"; then
+      echo "未收录智能体: $agent。请用 --dir <路径> 指定技能目录。" >&2; exit 2
+    fi
+    first="${dirs%% *}"
+    install_to "$(resolve_user "$first")"; echo "完成。"; return
+  fi
+  if [ "$global" = "1" ]; then
+    echo "安装到全部已知智能体用户级目录..."
+    local dirs rel
+    for a in claude cursor codex gemini goose amp opencode windsurf workbuddy kiro trae trae-cn qwen comate codebuddy kimi agents; do
+      dirs="$(dirs_for "$a")"
+      for rel in $dirs; do install_to "$(resolve_user "$rel")"; done
+    done
+    echo "完成。"; return
+  fi
+  local installed=0 d
+  for d in .claude/skills .cursor/skills .agents/skills .codex/skills .windsurf/skills .opencode/skills .gemini/skills .workbuddy/skills .kiro/skills .goose/skills .trae/skills .traecli/skills .qwen/skills .comate/skills .codebuddy/skills; do
+    if [ -d "$d" ]; then install_to "$d"; installed=1; fi
+  done
+  if [ "$installed" = "0" ]; then
+    echo "未检测到项目级智能体目录。可用 --agent <name> / -g 装到用户级，或 --dir 指定。"
+  fi
+}
+
+main "$@"

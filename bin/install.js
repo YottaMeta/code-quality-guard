@@ -2,10 +2,11 @@
 /**
  * code-quality-guard 跨平台安装器（YottaSkills）
  * 用法:
- *   npx -y @yottameta/code-quality-guard -g          # 安装到用户级目录（推荐）
- *   npx -y @yottameta/code-quality-guard             # 安装到检测到的项目级目录
- *   npx -y @yottameta/code-quality-guard --dir PATH  # 安装到指定目录
- *   npx -y @yottameta/code-quality-guard --list      # 列出支持的目录
+ *   npx -y @yottameta/code-quality-guard --agent <name>  # 按智能体默认用户级目录安装（推荐）
+ *   npx -y @yottameta/code-quality-guard --dir PATH      # 装到指定目录（用户改了目录的智能体）
+ *   npx -y @yottameta/code-quality-guard -g              # 安装到全部已知智能体用户级目录
+ *   npx -y @yottameta/code-quality-guard                 # 安装到检测到的项目级目录
+ *   npx -y @yottameta/code-quality-guard --list          # 列出智能体 -> 默认目录
  */
 'use strict';
 const fs = require('fs');
@@ -15,27 +16,46 @@ const os = require('os');
 const SKILL_NAME = 'code-quality-guard';
 const PKG_ROOT = path.join(__dirname, '..');
 
-const PROJECT_DIRS = [
-  '.claude/skills',
-  '.cursor/skills',
-  '.agents/skills',
-  '.codex/skills',
-  '.windsurf/skills',
-  '.opencode/skills',
-  '.gemini/skills',
-  '.workbuddy/skills',
-];
+// 智能体 -> 用户级默认技能目录（dirs 按优先级排列；--agent 装到第一个）
+// 依据官方文档：.agents/skills 并非通用目录，被 OpenCode / Cursor / Cline / Amp /
+// Kimi / Gemini CLI / GitHub Copilot 等读取；Claude Code 与 Codex 默认不读 .agents。
+const AGENT_DIRS = {
+  claude:    { label: 'Claude Code',      dirs: ['.claude/skills'] },
+  cursor:    { label: 'Cursor',           dirs: ['.cursor/skills', '.agents/skills'] },
+  codex:     { label: 'Codex',            dirs: ['.codex/skills'] }, // 特判：$CODEX_HOME/skills
+  gemini:    { label: 'Gemini CLI',       dirs: ['.gemini/skills', '.agents/skills'] },
+  goose:     { label: 'Goose',            dirs: ['.config/goose/skills', '.agents/skills'] },
+  amp:       { label: 'Amp',              dirs: ['.config/agents/skills', '.agents/skills'] },
+  opencode:  { label: 'OpenCode',         dirs: ['.config/opencode/skills'] }, // 特判：$XDG_CONFIG_HOME
+  windsurf:  { label: 'Windsurf',         dirs: ['.codeium/windsurf/skills'] },
+  workbuddy: { label: 'WorkBuddy',        dirs: ['.workbuddy/skills'] },
+  kiro:      { label: 'Kiro',             dirs: ['.kiro/skills'] },
+  trae:      { label: 'Trae Code CLI',    dirs: ['.traecli/skills'] },
+  'trae-cn': { label: 'Trae IDE（国内）',  dirs: ['.trae-cn/skills'] },
+  qwen:      { label: 'Qwen Code',        dirs: ['.qwen/skills'] },
+  comate:    { label: 'Comate 文心快码',   dirs: ['.comate/skills'] },
+  codebuddy: { label: 'CodeBuddy Code',   dirs: ['.codebuddy/skills'] },
+  kimi:      { label: 'Kimi Code CLI',    dirs: ['.kimi/skills'] },
+  agents:    { label: '通用 AGENTS.md',    dirs: ['.agents/skills'] },
+};
 
-const USER_DIRS = [
-  '.claude/skills',
-  '.cursor/skills',
-  '.codex/skills',
-  '.config/agents/skills',
-  '.windsurf/skills',
-  '.config/opencode/skills',
-  '.gemini/skills',
-  '.workbuddy/skills',
-];
+// Codex 用户级目录特判：优先 $CODEX_HOME/skills，否则 ~/.codex/skills
+function codexUserDir() {
+  const base = process.env.CODEX_HOME || path.join(os.homedir(), '.codex');
+  return path.join(base, 'skills');
+}
+
+// OpenCode 用户级目录特判：优先 $XDG_CONFIG_HOME/opencode/skills，否则 ~/.config/opencode/skills
+function opencodeUserDir() {
+  const base = process.env.XDG_CONFIG_HOME || path.join(os.homedir(), '.config');
+  return path.join(base, 'opencode', 'skills');
+}
+
+function resolveUserDir(rel) {
+  if (rel === '.codex/skills') return codexUserDir();
+  if (rel === '.config/opencode/skills') return opencodeUserDir();
+  return path.join(os.homedir(), rel);
+}
 
 function installTo(dest) {
   const target = path.join(dest, SKILL_NAME);
@@ -58,36 +78,83 @@ function copyDir(src, dst, skip) {
   }
 }
 
+function displayDir(rel) {
+  if (rel === '.codex/skills') return codexUserDir();
+  if (rel === '.config/opencode/skills') return opencodeUserDir();
+  return '~/' + rel;
+}
+
 function main() {
   const args = process.argv.slice(2);
   const isGlobal = args.includes('-g') || args.includes('--global');
-  const list = args.includes('--list');
+  const list = args.includes('--list') || args.includes('-l');
   let explicitDir = null;
   const di = args.indexOf('--dir');
   if (di !== -1 && args[di + 1]) explicitDir = args[di + 1];
+  let agent = null;
+  const ai = args.indexOf('--agent');
+  if (ai !== -1 && args[ai + 1]) agent = String(args[ai + 1]).toLowerCase();
 
   if (list) {
-    console.log('支持的智能体技能目录（项目级，仅检测已存在）:');
-    for (const d of PROJECT_DIRS) console.log('  ' + d);
-    console.log('支持的智能体技能目录（用户级，-g 时创建）:');
-    for (const d of USER_DIRS) console.log('  ~/' + d);
+    console.log('智能体 -> 默认技能目录（--agent <name> 装到第一个，用户级）:');
+    for (const [key, v] of Object.entries(AGENT_DIRS)) {
+      const resolved = v.dirs.map(displayDir);
+      console.log('  ' + key.padEnd(10) + v.label.padEnd(18) + resolved.join('、'));
+    }
+    console.log('\n说明：仅收录有官方默认目录的智能体；改了目录的请用 --dir <路径>，不要依赖默认位置。');
     return;
   }
 
   if (explicitDir) { installTo(explicitDir); return; }
 
-  if (isGlobal) {
-    for (const d of USER_DIRS) installTo(path.join(os.homedir(), d));
+  if (agent) {
+    const info = AGENT_DIRS[agent];
+    if (!info) {
+      console.log('未收录智能体: ' + agent + '。请用 --dir <路径> 指定技能目录。');
+      console.log('可用: ' + Object.keys(AGENT_DIRS).join(', '));
+      return;
+    }
+    installTo(resolveUserDir(info.dirs[0]));
     console.log('完成。');
     return;
   }
 
+  if (isGlobal) {
+    const seen = new Set();
+    for (const v of Object.values(AGENT_DIRS)) {
+      for (const d of v.dirs) {
+        if (seen.has(d)) continue;
+        seen.add(d);
+        installTo(resolveUserDir(d));
+      }
+    }
+    console.log('完成。');
+    return;
+  }
+
+  const PROJECT_DIRS = [
+    '.claude/skills',
+    '.cursor/skills',
+    '.agents/skills',
+    '.codex/skills',
+    '.windsurf/skills',
+    '.opencode/skills',
+    '.gemini/skills',
+    '.workbuddy/skills',
+    '.kiro/skills',
+    '.goose/skills',
+    '.trae/skills',
+    '.traecli/skills',
+    '.qwen/skills',
+    '.comate/skills',
+    '.codebuddy/skills',
+  ];
   let installedAny = false;
   for (const d of PROJECT_DIRS) {
     if (fs.existsSync(d)) { installTo(d); installedAny = true; }
   }
   if (!installedAny) {
-    console.log('未检测到项目级智能体目录。可手动复制，或用 -g 装到用户级。');
+    console.log('未检测到项目级智能体目录。可手动复制，或用 --agent <name> / -g 装到用户级。');
   }
 }
 

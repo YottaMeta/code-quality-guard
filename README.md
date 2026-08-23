@@ -35,7 +35,7 @@ code-quality-guard/
 │   ├── examples.md           # 语气 / 评分校准
 │   ├── AGENTS-template.md    # 可选：丢进仓库当 AGENTS.md 强制规范
 │   └── hooks.json            # 可选：PreToolUse 拦截 rm -rf / git push --force
-├── install.sh                # 一键安装到 7 类智能体
+├── install.sh                # 一键安装到 17 类智能体（含国内 Trae/Qwen/Comate/CodeBuddy/Kimi）
 └── LICENSE                   # MIT
 ```
 
@@ -49,34 +49,43 @@ code-quality-guard/
 npx -y @yottameta/code-quality-guard -g
 npx -y @yottameta/code-quality-guard --dir <你的技能目录>   # 任意智能体：指定目录安装
 ```
-> 智能体不在预置列表里？用 `--dir` 指定它的 skills 目录，或手动复制（方式三）。想手动拿文件也可 `npm pack @yottameta/code-quality-guard` 解包后按方式二/三安装。
+> 智能体不在预置列表里？用 `--dir` 指定它的 skills 目录，或手动复制（方式三）。`--list` 可查看各智能体对应的默认目录。想手动拿文件也可 `npm pack @yottameta/code-quality-guard` 解包后按方式二/三安装。
 
 ### 方式二：install.sh 一键安装
 获取技能文件夹后（`npm pack` 解包或 `git clone`），进入技能文件夹：
 ```bash
-./install.sh codex               # 用户级（默认装到 ~/.codex/skills）
-./install.sh codex --project     # 当前项目级
-./install.sh cursor              # 其他平台见 ./install.sh --list
-./install.sh --dir /path/to/skills
-./install.sh --list
+bash install.sh -g    # 用户级；bash install.sh --list 查看全部目录
+bash install.sh --agent codex   # 指定智能体（--list 可查看可用项）
+bash install.sh       # 项目级：自动检测已存在的 .claude/.cursor/.codex 等 skills 目录
+bash install.sh --dir /path/to/skills
 ```
 > Windows 用户：装有 Git Bash 即可用；否则用方式三手动复制。
 
 ### 方式三：手动复制
 把整个 `code-quality-guard` 文件夹复制到目标智能体的 skills 目录。常见位置（用户级；Windows 用 `%USERPROFILE%`，Linux/macOS 用 `~`）：
 
-| 智能体 | 目录 |
-|---|---|
-| Codex | `%USERPROFILE%\.codex\skills\code-quality-guard\` |
-| Claude Code | `%USERPROFILE%\.claude\skills\code-quality-guard\` |
-| Cursor | `%USERPROFILE%\.cursor\skills\code-quality-guard\`（项目级 `.cursor/skills/`） |
-| Windsurf | `%USERPROFILE%\.windsurf\skills\code-quality-guard\` |
-| opencode | `%USERPROFILE%\.config\opencode\skills\code-quality-guard\` |
-| Gemini | `%USERPROFILE%\.gemini\skills\code-quality-guard\` |
-| WorkBuddy | `%USERPROFILE%\.workbuddy\skills\code-quality-guard\` |
-| 通用约定 | `%USERPROFILE%\.agents\skills\code-quality-guard\`（通用目录约定，Cursor / Codex / Copilot 等智能体可识别） |
+| 智能体 | 用户级目录 | 项目级目录 |
+|---|---|---|
+| Codex | `%USERPROFILE%\.codex\skills\code-quality-guard\` | `.codex\skills\` |
+| Claude Code | `%USERPROFILE%\.claude\skills\code-quality-guard\` | `.claude\skills\` |
+| Cursor | `%USERPROFILE%\.cursor\skills\code-quality-guard\` | `.cursor\skills\` |
+| Windsurf | `%USERPROFILE%\.codeium\windsurf\skills\code-quality-guard\` | `.windsurf\skills\` |
+| opencode | `%USERPROFILE%\.config\opencode\skills\code-quality-guard\` | `.opencode\skills\` |
+| Gemini | `%USERPROFILE%\.gemini\skills\code-quality-guard\` | `.gemini\skills\` |
+| Goose | `%USERPROFILE%\.config\goose\skills\code-quality-guard\` | `.goose\skills\` |
+| Amp | `%USERPROFILE%\.config\agents\skills\code-quality-guard\` | `.agents\skills\` |
+| Kiro | `%USERPROFILE%\.kiro\skills\code-quality-guard\` | `.kiro\skills\` |
+| WorkBuddy | `%USERPROFILE%\.workbuddy\skills\code-quality-guard\` | `.workbuddy\skills\` |
+| Trae Code CLI | `%USERPROFILE%\.traecli\skills\code-quality-guard\` | `.traecli\skills\` |
+| Trae IDE（国内） | `%USERPROFILE%\.trae-cn\skills\code-quality-guard\` | `.trae\skills\` |
+| Qwen Code | `%USERPROFILE%\.qwen\skills\code-quality-guard\` | `.qwen\skills\` |
+| Comate | `%USERPROFILE%\.comate\skills\code-quality-guard\` | `.comate\skills\` |
+| CodeBuddy | `%USERPROFILE%\.codebuddy\skills\code-quality-guard\` | `.codebuddy\skills\` |
+| Kimi | `%USERPROFILE%\.kimi\skills\code-quality-guard\` | `.kimi\skills\` |
+| 通用 AGENTS.md | `%USERPROFILE%\.agents\skills\code-quality-guard\` | `.agents\skills\` |
 
-> 不确定目录？用 `--dir` 指定路径，或让该智能体自己安装（如 npx skills）。各智能体目录以官方文档为准。
+> Codex 默认目录若设置了环境变量 `CODEX_HOME`，以该变量为准；opencode 若设置 `XDG_CONFIG_HOME` 同理。`.agents\skills` 并非通用目录，仅 OpenCode / Cursor / Cline / Amp / Kimi / Gemini CLI / GitHub Copilot 等会读取，**Claude Code 与 Codex 默认不读**。不确定时用 `--dir` 指定，或让该智能体自行安装。
+
 ## 使用
 
 对话中说「review this PR」「结对评审」「发版前扫一眼」，或直接调用 `/code-quality-guard`。
