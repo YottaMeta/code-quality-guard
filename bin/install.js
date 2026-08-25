@@ -1,19 +1,19 @@
 #!/usr/bin/env node
 /**
- * code-quality-guard 跨平台安装器（YottaSkills）
+ * yotta-code-quality 跨平台安装器（YottaSkills）
  * 用法:
- *   npx -y @yottameta/code-quality-guard --agent <name>  # 按智能体默认用户级目录安装（推荐）
- *   npx -y @yottameta/code-quality-guard --dir PATH      # 装到指定目录（用户改了目录的智能体）
- *   npx -y @yottameta/code-quality-guard -g              # 安装到全部已知智能体用户级目录
- *   npx -y @yottameta/code-quality-guard                 # 安装到检测到的项目级目录
- *   npx -y @yottameta/code-quality-guard --list          # 列出智能体 -> 默认目录
+ *   npx -y @yottameta/yotta-code-quality --agent <name>  # 按智能体默认用户级目录安装（推荐）
+ *   npx -y @yottameta/yotta-code-quality --dir PATH      # 装到指定目录（用户改了目录的智能体）
+ *   npx -y @yottameta/yotta-code-quality -g              # 安装到全部已知智能体用户级目录
+ *   npx -y @yottameta/yotta-code-quality                 # 安装到检测到的项目级目录
+ *   npx -y @yottameta/yotta-code-quality --list          # 列出智能体 -> 默认目录
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const SKILL_NAME = 'code-quality-guard';
+const SKILL_NAME = 'yotta-code-quality';
 const PKG_ROOT = path.join(__dirname, '..');
 
 // 智能体 -> 用户级默认技能目录（dirs 按优先级排列；--agent 装到第一个）

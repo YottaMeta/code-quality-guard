@@ -1,15 +1,15 @@
 ---
-name: code-quality-guard
+name: yotta-code-quality
 description: >-
   Pair-style code quality reviewer: twelve book-grounded decay risks (R1–R6, T1–T6) plus
   release-safety and first-paint UX checks. Findings always use Iron Law
   (Symptom → Source → Consequence → Remedy) and a 0–100 review-index Health Score.
   Triggers when: user asks to review code/PR/diff, "any issues", "ready to merge", smells,
   refactoring, tech debt, test quality, coverage, or architecture health; or says
-  「结对评审」/「发版前扫一眼」/ code-quality-guard.
+  「结对评审」/「发版前扫一眼」/ yotta-code-quality.
   Do NOT trigger for: greenfield "how do I write X" with no code, pure syntax questions,
   or tool/framework questions with no shared code.
-version: 0.2.5
+version: 0.3.0
 license: MIT
 ---
 

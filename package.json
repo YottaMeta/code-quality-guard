@@ -1,11 +1,11 @@
 {
-  "name": "@yottameta/code-quality-guard",
-  "version": "0.2.5",
+  "name": "@yottameta/yotta-code-quality",
+  "version": "0.3.0",
   "description": "Pair-style code quality reviewer: twelve book-grounded decay risks (R1-R6, T1-T6) plus release-safety and first-paint UX checks; Iron Law findings (Symptom -> Source -> Consequence -> Remedy) and 0-100 Health Score.",
   "license": "MIT",
   "keywords": [
     "agent-skills",
-    "code-quality-guard",
+    "yotta-code-quality",
     "code-review",
     "tech-debt",
     "test-quality"
@@ -21,12 +21,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YottaMeta/code-quality-guard.git"
+    "url": "git+https://github.com/YottaMeta/yotta-code-quality.git"
   },
   "publishConfig": {
     "access": "public"
   },
   "bin": {
-    "code-quality-guard": "bin/install.js"
+    "yotta-code-quality": "bin/install.js"
   }
 }

@@ -7,7 +7,7 @@
 
 # Engineering Standards (Code Quality Reviewer)
 
-This project uses the **code-quality-guard** skill (grounded in twelve classic software-engineering
+This project uses the **yotta-code-quality** skill (grounded in twelve classic software-engineering
 books) for all code-quality work.
 
 ## Core Purpose
@@ -31,7 +31,7 @@ Coverage Illusion, Architecture Mismatch).
 - **Codex CLI / Claude Code / Cursor / Gemini / generic agents:** the skill loads from the agent's
   skills folder (`~/.codex/skills/`, `~/.claude/skills/`, `~/.agents/skills/`, etc.). Invoke by name
   or let it auto-trigger on code-quality discussion.
-- **WorkBuddy:** the skill lives in `~/.workbuddy/skills/code-quality-guard/`; the assistant loads
+- **WorkBuddy:** the skill lives in `~/.workbuddy/skills/yotta-code-quality/`; the assistant loads
   it via the Skill tool when code quality is in scope.
 
 ## Report Convention

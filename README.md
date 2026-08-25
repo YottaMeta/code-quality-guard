@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="assets/banner.png" alt="code-quality-guard banner" width="100%" />
+  <img src="assets/banner.png" alt="yotta-code-quality banner" width="100%" />
 </p>
 
-<h1 align="center">code-quality-guard（代码质量守卫）</h1>
+<h1 align="center">yotta-code-quality（代码质量守卫）</h1>
 
 <p align="center">面向 **Cursor / Codex / Claude Code / 通用 Agent** 的结对代码审查技能。把「代码质量审查」沉淀为可复用、可配置、有方法论支撑的技能，让智能体在交付前像资深工程师一样通读代码、定位劣化，并给出带依据的修复方案。</p>
 
@@ -13,10 +13,10 @@
 <p align="center">
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-blue" /></a>
   <a href="https://agentskills.io/"><img alt="Standard: agentskills.io" src="https://img.shields.io/badge/standard-agentskills.io-orange" /></a>
-  <a href="https://www.npmjs.com/package/@yottameta/code-quality-guard"><img alt="npm package" src="https://img.shields.io/npm/v/@yottameta/code-quality-guard" /></a>
-  <a href="https://github.com/YottaMeta/code-quality-guard"><img alt="GitHub stars" src="https://img.shields.io/github/stars/YottaMeta/code-quality-guard" /></a>
-  <a href="https://github.com/YottaMeta/code-quality-guard/commits/main"><img alt="last commit" src="https://img.shields.io/github/last-commit/YottaMeta/code-quality-guard" /></a>
-  <a href="https://github.com/YottaMeta/code-quality-guard"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen" /></a>
+  <a href="https://www.npmjs.com/package/@yottameta/yotta-code-quality"><img alt="npm package" src="https://img.shields.io/npm/v/@yottameta/yotta-code-quality" /></a>
+  <a href="https://github.com/YottaMeta/yotta-code-quality"><img alt="GitHub stars" src="https://img.shields.io/github/stars/YottaMeta/yotta-code-quality" /></a>
+  <a href="https://github.com/YottaMeta/yotta-code-quality/commits/main"><img alt="last commit" src="https://img.shields.io/github/last-commit/YottaMeta/yotta-code-quality" /></a>
+  <a href="https://github.com/YottaMeta/yotta-code-quality"><img alt="PRs welcome" src="https://img.shields.io/badge/PRs-welcome-brightgreen" /></a>
 </p>
 
 ## 核心价值
@@ -30,7 +30,7 @@
 
 ## 核心优势
 
-| 维度 | code-quality-guard | 说明 |
+| 维度 | yotta-code-quality | 说明 |
 |------|--------------------|------|
 | 方法论 | 12 本经典 SE 著作 + 坏味道 | 每条发现可溯源，非经验主义空谈 |
 | 发现结构 | Iron Law 四段式 | 强制带「后果 + 修复」，避免无效吐槽 |
@@ -135,7 +135,7 @@ history: false
 ## 目录结构
 
 ```
-code-quality-guard/
+yotta-code-quality/
 ├── SKILL.md                  # 入口 + 按模式按需加载的路由
 ├── references/
 │   ├── common.md             # 配置 / 模板 / 评分（单一信息源）
@@ -160,10 +160,10 @@ code-quality-guard/
 ### 方式一：npm（推荐，一行安装）
 ```bash
 # 国内加速（可选）：npm config set registry https://registry.npmmirror.com
-npx -y @yottameta/code-quality-guard -g
-npx -y @yottameta/code-quality-guard --dir <你的技能目录>   # 任意智能体：指定目录安装
+npx -y @yottameta/yotta-code-quality -g
+npx -y @yottameta/yotta-code-quality --dir <你的技能目录>   # 任意智能体：指定目录安装
 ```
-> 智能体不在预置列表？用 `--dir` 指定它的 skills 目录，或手动复制（方式三）。`--list` 可查看各智能体对应的默认目录。想手动拿文件也可 `npm pack @yottameta/code-quality-guard` 解包后按方式二/三安装。
+> 智能体不在预置列表？用 `--dir` 指定它的 skills 目录，或手动复制（方式三）。`--list` 可查看各智能体对应的默认目录。想手动拿文件也可 `npm pack @yottameta/yotta-code-quality` 解包后按方式二/三安装。
 
 ### 方式二：install.sh 一键安装
 获取技能文件夹后（`npm pack` 解包或 `git clone`），进入技能文件夹：
@@ -176,33 +176,33 @@ bash install.sh --dir /path/to/skills
 > Windows 用户：装有 Git Bash 即可用；否则用方式三手动复制。
 
 ### 方式三：手动复制
-把整个 `code-quality-guard` 文件夹复制到目标智能体的 skills 目录。常见位置（用户级；Windows 用 `%USERPROFILE%`，Linux/macOS 用 `~`）：
+把整个 `yotta-code-quality` 文件夹复制到目标智能体的 skills 目录。常见位置（用户级；Windows 用 `%USERPROFILE%`，Linux/macOS 用 `~`）：
 
 | 智能体 | 用户级目录 | 项目级目录 |
 |---|---|---|
-| Codex | `%USERPROFILE%\.codex\skills\code-quality-guard\` | `.codex\skills\` |
-| Claude Code | `%USERPROFILE%\.claude\skills\code-quality-guard\` | `.claude\skills\` |
-| Cursor | `%USERPROFILE%\.cursor\skills\code-quality-guard\` | `.cursor\skills\` |
-| Windsurf | `%USERPROFILE%\.codeium\windsurf\skills\code-quality-guard\` | `.windsurf\skills\` |
-| opencode | `%USERPROFILE%\.config\opencode\skills\code-quality-guard\` | `.opencode\skills\` |
-| Gemini | `%USERPROFILE%\.gemini\skills\code-quality-guard\` | `.gemini\skills\` |
-| Goose | `%USERPROFILE%\.config\goose\skills\code-quality-guard\` | `.goose\skills\` |
-| Amp | `%USERPROFILE%\.config\agents\skills\code-quality-guard\` | `.agents\skills\` |
-| Kiro | `%USERPROFILE%\.kiro\skills\code-quality-guard\` | `.kiro\skills\` |
-| WorkBuddy | `%USERPROFILE%\.workbuddy\skills\code-quality-guard\` | `.workbuddy\skills\` |
-| Trae Code CLI | `%USERPROFILE%\.traecli\skills\code-quality-guard\` | `.traecli\skills\` |
-| Trae IDE（国内） | `%USERPROFILE%\.trae-cn\skills\code-quality-guard\` | `.trae\skills\` |
-| Qwen Code | `%USERPROFILE%\.qwen\skills\code-quality-guard\` | `.qwen\skills\` |
-| Comate | `%USERPROFILE%\.comate\skills\code-quality-guard\` | `.comate\skills\` |
-| CodeBuddy | `%USERPROFILE%\.codebuddy\skills\code-quality-guard\` | `.codebuddy\skills\` |
-| Kimi | `%USERPROFILE%\.kimi\skills\code-quality-guard\` | `.kimi\skills\` |
-| 通用 AGENTS.md | `%USERPROFILE%\.agents\skills\code-quality-guard\` | `.agents\skills\` |
+| Codex | `%USERPROFILE%\.codex\skills\yotta-code-quality\` | `.codex\skills\` |
+| Claude Code | `%USERPROFILE%\.claude\skills\yotta-code-quality\` | `.claude\skills\` |
+| Cursor | `%USERPROFILE%\.cursor\skills\yotta-code-quality\` | `.cursor\skills\` |
+| Windsurf | `%USERPROFILE%\.codeium\windsurf\skills\yotta-code-quality\` | `.windsurf\skills\` |
+| opencode | `%USERPROFILE%\.config\opencode\skills\yotta-code-quality\` | `.opencode\skills\` |
+| Gemini | `%USERPROFILE%\.gemini\skills\yotta-code-quality\` | `.gemini\skills\` |
+| Goose | `%USERPROFILE%\.config\goose\skills\yotta-code-quality\` | `.goose\skills\` |
+| Amp | `%USERPROFILE%\.config\agents\skills\yotta-code-quality\` | `.agents\skills\` |
+| Kiro | `%USERPROFILE%\.kiro\skills\yotta-code-quality\` | `.kiro\skills\` |
+| WorkBuddy | `%USERPROFILE%\.workbuddy\skills\yotta-code-quality\` | `.workbuddy\skills\` |
+| Trae Code CLI | `%USERPROFILE%\.traecli\skills\yotta-code-quality\` | `.traecli\skills\` |
+| Trae IDE（国内） | `%USERPROFILE%\.trae-cn\skills\yotta-code-quality\` | `.trae\skills\` |
+| Qwen Code | `%USERPROFILE%\.qwen\skills\yotta-code-quality\` | `.qwen\skills\` |
+| Comate | `%USERPROFILE%\.comate\skills\yotta-code-quality\` | `.comate\skills\` |
+| CodeBuddy | `%USERPROFILE%\.codebuddy\skills\yotta-code-quality\` | `.codebuddy\skills\` |
+| Kimi | `%USERPROFILE%\.kimi\skills\yotta-code-quality\` | `.kimi\skills\` |
+| 通用 AGENTS.md | `%USERPROFILE%\.agents\skills\yotta-code-quality\` | `.agents\skills\` |
 
 > Codex 默认目录若设置了环境变量 `CODEX_HOME`，以该变量为准；opencode 若设置 `XDG_CONFIG_HOME` 同理。`.agents\skills` 并非通用目录，仅 OpenCode / Cursor / Cline / Amp / Kimi / Gemini CLI / GitHub Copilot 等会读取，**Claude Code 与 Codex 默认不读**。不确定时用 `--dir` 指定，或让该智能体自行安装。
 
 ## 使用
 
-对话中说「review this PR」「结对评审」「发版前扫一眼」，或直接调用 `/code-quality-guard`。可选参数见上文「可选参数」。
+对话中说「review this PR」「结对评审」「发版前扫一眼」，或直接调用 `/yotta-code-quality`。可选参数见上文「可选参数」。
 
 ### 示例：Quick 审查（粘贴一段函数）
 
@@ -228,8 +228,8 @@ bash install.sh --dir /path/to/skills
 
 ## 升级与卸载
 
-- **升级**：重新执行一次安装命令即可覆盖为最新版（npm 方式：`npx -y @yottameta/code-quality-guard -g`；install.sh 方式：重新在技能文件夹运行）。版本号见 npm。
-- **卸载**：删除目标智能体 skills 目录下的 `code-quality-guard/` 文件夹即可。
+- **升级**：重新执行一次安装命令即可覆盖为最新版（npm 方式：`npx -y @yottameta/yotta-code-quality -g`；install.sh 方式：重新在技能文件夹运行）。版本号见 npm。
+- **卸载**：删除目标智能体 skills 目录下的 `yotta-code-quality/` 文件夹即可。
 - **无副作用**：技能不写项目外文件；可选的历史/趋势文件（`.code-quality-history.json`）只在你开启 `history: true` 时生成，位于仓库根。
 
 ## 常见问题（FAQ）
