@@ -9,11 +9,11 @@ description: >-
   「结对评审」/「发版前扫一眼」/ yotta-code-quality.
   Do NOT trigger for: greenfield "how do I write X" with no code, pure syntax questions,
   or tool/framework questions with no shared code.
-version: 0.3.0
+version: 0.3.1
 license: MIT
 ---
 
-# Code Quality Reviewer
+# 元质（yotta-code-quality）
 
 Portable reviewer for Cursor and other Agent-Skills hosts.
 

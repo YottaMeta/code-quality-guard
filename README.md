@@ -2,7 +2,7 @@
   <img src="assets/banner.png" alt="yotta-code-quality banner" width="100%" />
 </p>
 
-<h1 align="center">yotta-code-quality（代码质量守卫）</h1>
+<h1 align="center">yotta-code-quality · 元质</h1>
 
 <p align="center">面向 **Cursor / Codex / Claude Code / 通用 Agent** 的结对代码审查技能。把「代码质量审查」沉淀为可复用、可配置、有方法论支撑的技能，让智能体在交付前像资深工程师一样通读代码、定位劣化，并给出带依据的修复方案。</p>
 
