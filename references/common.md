@@ -23,6 +23,7 @@ Before review, try `.code-quality.yaml` at repo root. Missing → defaults (all 
 - **`ignore`** — glob exclude (e.g. `**/*.generated.*`).
 - **`focus`** — only these codes; cannot combine with non-empty `disable`.
 - **`strictness`** — `strict` | `balanced` (default) | `legacy-friendly`.
+- **`history`** — `true` writes `.code-quality-history.json` trend; default `off` (see History Tracking).
 - **`suppress`** — list of `{ id, reason, expires? }` from opt-in triage (see below).
 
 ```yaml
@@ -34,6 +35,7 @@ ignore:
   - "**/*.generated.*"
   - "**/node_modules/**"
 suppress: []
+history: false
 ```
 
 ### Validation
