@@ -1,6 +1,6 @@
 {
   "name": "@yottameta/yotta-code-quality",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "description": "Pair-style code quality reviewer: twelve book-grounded decay risks (R1-R6, T1-T6) plus release-safety and first-paint UX checks; Iron Law findings (Symptom -> Source -> Consequence -> Remedy) and 0-100 Health Score.",
   "license": "MIT",
   "keywords": [
@@ -17,7 +17,10 @@
     "install.sh",
     "references",
     "bin",
-    "assets"
+    "assets",
+    "README.zh-CN.md",
+    "NOTICE",
+    "CHANGELOG.md"
   ],
   "repository": {
     "type": "git",
